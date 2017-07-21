@@ -15,7 +15,7 @@ defmodule MatchOrNot.FeedbackController do
     score_query = from s in Score,
       left_join: f in assoc(s, :feedbacks),
       group_by: [s.id, s.score],
-      having: count(f.id) < 3,
+      having: count(f.id) < 1,
       limit: 1,
       preload: [:job, :talent, :feedbacks],
       order_by: [s.score, count(f.id)]

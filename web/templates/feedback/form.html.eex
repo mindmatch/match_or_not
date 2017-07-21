@@ -9,7 +9,7 @@
 
   <div class="form-group">
     <%= label f, :username, class: "control-label" %>
-    <%= text_input f, :username, class: "form-control" %>
+    <%= text_input f, :username, value: @changeset.data.username, class: "form-control" %>
     <%= error_tag f, :username %>
   </div>
 

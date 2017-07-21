@@ -11,13 +11,16 @@ defmodule MatchOrNot.FeedbackController do
 
   def new(conn, _params) do
     import Ecto.Query
+    username = conn.cookies["username"]
 
     feedbacks = from f in Feedback, join: s in assoc(f, :score), select: %{job_id: s.job_id, score_id: f.score_id, username: f.username, id: f.id}
+    ids = MatchOrNot.Repo.all(from f in MatchOrNot.Feedback, where: f.username == ^username) |> Enum.map(&(&1.score_id))
 
     score_query = from s in Score,
       left_join: f in subquery(feedbacks), on: f.score_id == s.id,
+      where: not s.id in ^ids,
       group_by: [s.id, s.score, s.job_id],
-      having: count(f.id) < 1,
+      having: count(f.id) < 3,
       having: count(f.job_id) < 25,
       limit: 1,
       preload: [:job, :talent, :feedbacks],
@@ -25,7 +28,7 @@ defmodule MatchOrNot.FeedbackController do
 
     score = Repo.all(score_query) |> List.first
     feedback = if score do
-      %Feedback{score_id: score.id}
+      %Feedback{score_id: score.id, username: username}
     else
       %Feedback{}
     end
@@ -40,6 +43,7 @@ defmodule MatchOrNot.FeedbackController do
       {:ok, _feedback} ->
         conn
         |> put_flash(:info, "Feedback created successfully.")
+        |> put_resp_cookie("username", feedback_params["username"])
         |> redirect(to: feedback_path(conn, :new))
       {:error, changeset} ->
         render(conn, "new.html", changeset: changeset)

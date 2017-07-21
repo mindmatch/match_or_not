@@ -8,7 +8,7 @@
   <p><%= Map.fetch!(@score.job.description, "para_2")%></p>
 
   <h4>Talent: <%= Map.fetch!(@score.talent.resume, "talent_id")%></h4>
-  <p>Skills: <%= Map.fetch!(@score.talent.resume, "skills") |> Enum.map_join(", ", fn(skill) -> Map.fetch!(skill, "name") end) %></p>
+  <p>Skills: <%= Map.fetch!(@score.talent.resume, "skills") |> Enum.map_join(", ", fn(skill) -> if is_map(skill), do: Map.fetch!(skill, "name"), else: Tuple.to_list(skill) |> List.last end) %></p>
   <p><%= Map.fetch!(@score.talent.resume, "summary") |> Floki.parse |> Floki.text %></p>
   <text><%= Map.fetch!(@score.talent.resume, "experience_entries") |> Poison.encode!(pretty: true) %></text>
 

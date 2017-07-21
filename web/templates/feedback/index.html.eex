@@ -1,0 +1,30 @@
+<h2>Listing feedbacks</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Score</th>
+      <th>Username</th>
+      <th>Feedback</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for feedback <- @feedbacks do %>
+    <tr>
+      <td><%= feedback.score_id %></td>
+      <td><%= feedback.username %></td>
+      <td><%= feedback.feedback %></td>
+
+      <td class="text-right">
+        <%= link "Show", to: feedback_path(@conn, :show, feedback), class: "btn btn-default btn-xs" %>
+        <%= link "Edit", to: feedback_path(@conn, :edit, feedback), class: "btn btn-default btn-xs" %>
+        <%= link "Delete", to: feedback_path(@conn, :delete, feedback), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<%= link "New feedback", to: feedback_path(@conn, :new) %>

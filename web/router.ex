@@ -16,7 +16,12 @@ defmodule MatchOrNot.Router do
   scope "/", MatchOrNot do
     pipe_through :browser # Use the default browser stack
 
-    get "/", PageController, :index
+    get "/", FeedbackController, :new
+    get "/about", PageController, :index
+    resources "/feedbacks", FeedbackController
+    resources "/scores", ScoreController
+    resources "/talents", TalentController
+    resources "/jobs", JobController
   end
 
   # Other scopes may use custom stacks.

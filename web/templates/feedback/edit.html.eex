@@ -1,0 +1,6 @@
+<h2>Edit feedback</h2>
+
+<%= render "form.html", changeset: @changeset,
+                        action: feedback_path(@conn, :update, @feedback) %>
+
+<%= link "Back", to: feedback_path(@conn, :index) %>

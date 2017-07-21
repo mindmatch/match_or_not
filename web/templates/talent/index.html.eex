@@ -1,0 +1,26 @@
+<h2>Listing talents</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Resume</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for talent <- @talents do %>
+    <tr>
+      <td><%= talent.resume %></td>
+
+      <td class="text-right">
+        <%= link "Show", to: talent_path(@conn, :show, talent), class: "btn btn-default btn-xs" %>
+        <%= link "Edit", to: talent_path(@conn, :edit, talent), class: "btn btn-default btn-xs" %>
+        <%= link "Delete", to: talent_path(@conn, :delete, talent), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<%= link "New talent", to: talent_path(@conn, :new) %>

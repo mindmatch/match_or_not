@@ -1,0 +1,6 @@
+<h2>New talent</h2>
+
+<%= render "form.html", changeset: @changeset,
+                        action: talent_path(@conn, :create) %>
+
+<%= link "Back", to: talent_path(@conn, :index) %>

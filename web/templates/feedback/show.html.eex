@@ -1,0 +1,23 @@
+<h2>Show feedback</h2>
+
+<ul>
+
+  <li>
+    <strong>Score:</strong>
+    <%= @feedback.score_id %>
+  </li>
+
+  <li>
+    <strong>Username:</strong>
+    <%= @feedback.username %>
+  </li>
+
+  <li>
+    <strong>Feedback:</strong>
+    <%= @feedback.feedback %>
+  </li>
+
+</ul>
+
+<%= link "Edit", to: feedback_path(@conn, :edit, @feedback) %>
+<%= link "Back", to: feedback_path(@conn, :index) %>

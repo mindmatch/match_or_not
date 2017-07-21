@@ -1,0 +1,13 @@
+<h2>Show talent</h2>
+
+<ul>
+
+  <li>
+    <strong>Resume:</strong>
+    <%= @talent.resume %>
+  </li>
+
+</ul>
+
+<%= link "Edit", to: talent_path(@conn, :edit, @talent) %>
+<%= link "Back", to: talent_path(@conn, :index) %>

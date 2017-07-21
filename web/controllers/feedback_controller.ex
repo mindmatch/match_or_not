@@ -38,7 +38,7 @@ defmodule MatchOrNot.FeedbackController do
       {:ok, _feedback} ->
         conn
         |> put_flash(:info, "Feedback created successfully.")
-        |> redirect(to: feedback_path(conn, :index))
+        |> redirect(to: feedback_path(conn, :new))
       {:error, changeset} ->
         render(conn, "new.html", changeset: changeset)
     end

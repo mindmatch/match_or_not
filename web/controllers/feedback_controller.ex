@@ -14,7 +14,11 @@ defmodule MatchOrNot.FeedbackController do
     username = conn.cookies["username"]
 
     feedbacks = from f in Feedback, join: s in assoc(f, :score), select: %{job_id: s.job_id, score_id: f.score_id, username: f.username, id: f.id}
-    ids = MatchOrNot.Repo.all(from f in MatchOrNot.Feedback, where: f.username == ^username) |> Enum.map(&(&1.score_id))
+    if is_nil(username) do
+      ids = []
+    else
+      ids = MatchOrNot.Repo.all(from f in MatchOrNot.Feedback, where: f.username == ^username) |> Enum.map(&(&1.score_id))
+    end
 
     score_query = from s in Score,
       left_join: f in subquery(feedbacks), on: f.score_id == s.id,

@@ -14,11 +14,12 @@ defmodule MatchOrNot.FeedbackController do
 
     score_query = from s in Score,
       left_join: f in assoc(s, :feedbacks),
-      group_by: [s.id, s.score],
+      group_by: [s.id, s.score, s.job_id],
       having: count(f.id) < 1,
+      having: count(s.job_id) < 25,
       limit: 1,
       preload: [:job, :talent, :feedbacks],
-      order_by: [s.score, count(f.id)]
+      order_by: [s.job_id, s.score, count(f.id)]
 
     score = Repo.all(score_query) |> List.first
     feedback = if score do

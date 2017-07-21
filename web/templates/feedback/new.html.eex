@@ -3,7 +3,14 @@
 <%= unless @score == nil do %>
   <h4>Score: <%= @score.score%></h4>
   <h4>Job: <%= Map.fetch!(@score.job.description, "job_title")%></h4>
-  <h4>Talent: <%= Map.fetch!(@score.talent.resume, "summary")%></h4>
+  <p>Company: <%= Map.fetch!(@score.job.description, "company_name")%></p>
+  <p><%= Map.fetch!(@score.job.description, "para_1")%></p>
+  <p><%= Map.fetch!(@score.job.description, "para_2")%></p>
+
+  <h4>Talent: <%= Map.fetch!(@score.talent.resume, "talent_id")%></h4>
+  <p>Skills: <%= Map.fetch!(@score.talent.resume, "skills") |> Enum.map_join(", ", fn(skill) -> Map.fetch!(skill, "name") end) %></p>
+  <p><%= Map.fetch!(@score.talent.resume, "summary") |> Floki.parse |> Floki.text %></p>
+  <text><%= Map.fetch!(@score.talent.resume, "experience_entries") |> Poison.encode!(pretty: true) %></text>
 
   <%= render "form.html", changeset: @changeset,
                         action: feedback_path(@conn, :create) %>
@@ -11,4 +18,4 @@
 <% else %>
   <p>Sorry No match there to feedback ;(</p>
 <% end %>
-<%= link "Back", to: feedback_path(@conn, :index) %>
+<%= link "Back", to: feedback_path(@conn, :new) %>

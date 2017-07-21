@@ -14,7 +14,7 @@ defmodule MatchOrNot.Feedback do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:username, :feedback])
-    |> validate_required([:username, :feedback])
+    |> cast(params, [:username, :feedback, :score_id])
+    |> validate_required([:username, :feedback, :score_id])
   end
 end

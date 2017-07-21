@@ -1,6 +1,14 @@
 <h2>New feedback</h2>
 
-<%= render "form.html", changeset: @changeset,
+<%= unless @score == nil do %>
+  <h4>Score: <%= @score.score%></h4>
+  <h4>Job: <%= Map.fetch!(@score.job.description, "job_title")%></h4>
+  <h4>Talent: <%= Map.fetch!(@score.talent.resume, "summary")%></h4>
+
+  <%= render "form.html", changeset: @changeset,
                         action: feedback_path(@conn, :create) %>
 
+<% else %>
+  <p>Sorry No match there to feedback ;(</p>
+<% end %>
 <%= link "Back", to: feedback_path(@conn, :index) %>

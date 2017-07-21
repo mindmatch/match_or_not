@@ -11,7 +11,7 @@
   <tbody>
 <%= for job <- @jobs do %>
     <tr>
-      <td><%= job.description %></td>
+      <td><%= Poison.encode!(job.description, pretty: true) %></td>
 
       <td class="text-right">
         <%= link "Show", to: job_path(@conn, :show, job), class: "btn btn-default btn-xs" %>

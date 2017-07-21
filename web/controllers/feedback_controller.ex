@@ -2,6 +2,7 @@ defmodule MatchOrNot.FeedbackController do
   use MatchOrNot.Web, :controller
 
   alias MatchOrNot.Feedback
+  alias MatchOrNot.Score
 
   def index(conn, _params) do
     feedbacks = Repo.all(Feedback)
@@ -9,8 +10,24 @@ defmodule MatchOrNot.FeedbackController do
   end
 
   def new(conn, _params) do
-    changeset = Feedback.changeset(%Feedback{})
-    render(conn, "new.html", changeset: changeset)
+    import Ecto.Query
+
+    score_query = from s in Score,
+      left_join: f in assoc(s, :feedbacks),
+      group_by: [s.id, s.score],
+      having: count(f.id) < 3,
+      limit: 1,
+      preload: [:job, :talent, :feedbacks],
+      order_by: [s.score, count(f.id)]
+
+    score = Repo.all(score_query) |> List.first
+    feedback = if score do
+      %Feedback{score_id: score.id}
+    else
+      %Feedback{}
+    end
+    changeset = Feedback.changeset(feedback)
+    render(conn, "new.html", changeset: changeset, score: score)
   end
 
   def create(conn, %{"feedback" => feedback_params}) do

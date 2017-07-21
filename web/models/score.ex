@@ -5,6 +5,7 @@ defmodule MatchOrNot.Score do
     field :score, :float
     belongs_to :talent, MatchOrNot.Talent
     belongs_to :job, MatchOrNot.Job
+    has_many :feedbacks, MatchOrNot.Feedback
 
     timestamps()
   end

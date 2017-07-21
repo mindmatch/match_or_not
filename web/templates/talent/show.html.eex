@@ -4,7 +4,7 @@
 
   <li>
     <strong>Resume:</strong>
-    <%= @talent.resume %>
+    <%= Poison.encode!(@talent.resume, pretty: true) %>
   </li>
 
 </ul>

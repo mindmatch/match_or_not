@@ -11,7 +11,7 @@
   <tbody>
 <%= for talent <- @talents do %>
     <tr>
-      <td><%= talent.resume %></td>
+      <td><%= Poison.encode!(talent.resume, pretty: true) %></td>
 
       <td class="text-right">
         <%= link "Show", to: talent_path(@conn, :show, talent), class: "btn btn-default btn-xs" %>

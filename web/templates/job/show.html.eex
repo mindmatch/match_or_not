@@ -4,7 +4,7 @@
 
   <li>
     <strong>Description:</strong>
-    <%= @job.description %>
+    <%= Poison.encode!(@job.description, pretty: true) %>
   </li>
 
 </ul>

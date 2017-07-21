@@ -12,11 +12,13 @@ defmodule MatchOrNot.FeedbackController do
   def new(conn, _params) do
     import Ecto.Query
 
+    feedbacks = from f in Feedback, join: s in assoc(f, :score), select: %{job_id: s.job_id, score_id: f.score_id, username: f.username, id: f.id}
+
     score_query = from s in Score,
-      left_join: f in assoc(s, :feedbacks),
+      left_join: f in subquery(feedbacks), on: f.score_id == s.id,
       group_by: [s.id, s.score, s.job_id],
       having: count(f.id) < 1,
-      having: count(s.job_id) < 25,
+      having: count(f.job_id) < 25,
       limit: 1,
       preload: [:job, :talent, :feedbacks],
       order_by: [s.job_id, s.score, count(f.id)]

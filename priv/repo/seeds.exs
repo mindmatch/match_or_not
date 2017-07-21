@@ -26,6 +26,17 @@ job = Repo.insert!(%Job{
 """)
 })
 
+job2 = Repo.insert!(%Job{
+  description: Poison.decode!("""
+{
+  "job_title": "Ruby Software Developer",
+  "company_name": "MindMatch",
+  "para_1": "some js and",
+  "para_2": "ruby ruby ruby"
+}
+""")
+})
+
 resume = Poison.decode!("""
 {
 "talent_id": 12716,
@@ -158,4 +169,10 @@ Repo.insert!(%Score{
   talent_id: talent.id,
   job_id: job.id,
   score: 0.07388845294
+})
+
+Repo.insert!(%Score{
+  talent_id: talent.id,
+  job_id: job2.id,
+  score: 0.07788845294
 })

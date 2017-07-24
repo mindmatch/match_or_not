@@ -29,7 +29,7 @@ defmodule MatchOrNot.FeedbackController do
     score_query = from s in Score,
       left_join: f in subquery(feedbacks), on: f.score_id == s.id,
       where: not s.id in ^ids,
-      where: not f.job_id in ^job_ids,
+      where: not s.job_id in ^job_ids,
       group_by: [s.id, s.score, s.job_id],
       having: count(f.id) < 3,
       #   having: count(f.job_id) < 25,

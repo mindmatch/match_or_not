@@ -18,7 +18,6 @@ defmodule MatchOrNot.FeedbackController do
       ids = []
       feedback_count_limit_query = from f in Feedback,
         join: s in assoc(f, :score),
-        where: f.username == ^username,
         select: s.job_id,
         group_by: [s.job_id],
         having: count(f.id) >= 75

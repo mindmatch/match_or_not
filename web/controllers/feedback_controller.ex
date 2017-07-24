@@ -29,7 +29,7 @@ defmodule MatchOrNot.FeedbackController do
     #left_join: f in subquery(feedbacks), on: f.score_id == s.id,
       join: f in assoc(s, :feedbacks),
       where: not s.id in ^ids,
-      where: not s.id in ^feedbacked_score_ids,
+      where: s.id in ^feedbacked_score_ids,
       group_by: [s.id, s.score, s.job_id],
       having: count(f.id) < 3,
       #   having: count(f.job_id) < 25,

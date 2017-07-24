@@ -22,7 +22,7 @@ defmodule MatchOrNot.FeedbackController do
     feedback_count_limit_query = from f in Feedback,
       join: s in assoc(f, :score),
       group_by: [f.score_id, f.id],
-      having: count(s.job_id) <= 2
+      having: count(s.job_id) <= 25
 
     feedbacked_score_ids = MatchOrNot.Repo.all(feedback_count_limit_query) |> Enum.map(&(&1.score_id))
     score_query = from s in Score,

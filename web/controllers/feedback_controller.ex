@@ -16,7 +16,13 @@ defmodule MatchOrNot.FeedbackController do
     feedbacks = from f in Feedback, join: s in assoc(f, :score), select: %{job_id: s.job_id, score_id: f.score_id, username: f.username, id: f.id}
     if is_nil(username) do
       ids = []
-      job_ids = []
+      feedback_count_limit_query = from f in Feedback,
+        join: s in assoc(f, :score),
+        where: f.username == ^username,
+        select: s.job_id,
+        group_by: [s.job_id],
+        having: count(f.id) >= 75
+      job_ids = MatchOrNot.Repo.all(feedback_count_limit_query)
     else
       ids = MatchOrNot.Repo.all(from f in MatchOrNot.Feedback, where: f.username == ^username) |> Enum.map(&(&1.score_id))
       feedback_count_limit_query = from f in Feedback,

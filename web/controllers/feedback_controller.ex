@@ -25,7 +25,7 @@ defmodule MatchOrNot.FeedbackController do
       group_by: [s.job_id],
       having: count(f.id) >= 25
 
-    job_ids = MatchOrNot.Repo.all(feedback_count_limit_query) |> Enum.map(&(&1.job_id))
+    job_ids = MatchOrNot.Repo.all(feedback_count_limit_query)
     score_query = from s in Score,
       left_join: f in subquery(feedbacks), on: f.score_id == s.id,
       where: not s.id in ^ids,

@@ -10,7 +10,7 @@
   <h4>Talent: <%= Map.fetch!(@score.talent.resume, "talent_id")%></h4>
   <p>Skills: <%= Map.fetch!(@score.talent.resume, "skills") |> Enum.map_join(", ", fn(skill) -> if is_map(skill), do: Map.fetch!(skill, "name"), else: Tuple.to_list(skill) |> List.last end) %></p>
   <p><%= Map.fetch!(@score.talent.resume, "summary") |> Floki.parse |> Floki.text %></p>
-  <text><%= Map.fetch!(@score.talent.resume, "experience_entries") |> Poison.encode!(pretty: true) %></text>
+  <%= Map.fetch!(@score.talent.resume, "experience_entries") |> Enum.map(fn(entry) -> raw("<li>#{Enum.map(entry, fn({k,v}) -> "<p><strong>#{k}:</strong> #{v}</p>" end)}</li>") end) %>
 
   <%= render "form.html", changeset: @changeset,
                         action: feedback_path(@conn, :create) %>
@@ -18,4 +18,3 @@
 <% else %>
   <p>Sorry No match there to feedback ;(</p>
 <% end %>
-<%= link "Back", to: feedback_path(@conn, :new) %>

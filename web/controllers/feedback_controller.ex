@@ -38,7 +38,7 @@ defmodule MatchOrNot.FeedbackController do
       where: not s.id in ^ids,
       where: not s.job_id in ^job_ids,
       group_by: [s.id, s.score, s.job_id],
-      having: count(f.id) < 3,
+      having: count(f.id) < 1,
       #   having: count(f.job_id) < 25,
       limit: 1,
       preload: [:job, :talent, :feedbacks],
